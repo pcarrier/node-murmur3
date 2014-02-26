@@ -2,10 +2,10 @@ var assert = require('assert'),
     murmur3 = require('./index');
 
 // Types don't matter, goes to new Buffer(toString()) as needed
-   assert.equal(murmur3.hash32     (null),             0x00000000);
-   assert.equal(murmur3.hash32     ('0'),              0xd271c07f);
-   assert.equal(murmur3.hash32     (0),                0xd271c07f);
-   assert.equal(murmur3.hash32     (new Buffer('0')),  0xd271c07f);
+    assert.equal(murmur3.hash32    (null),             0x00000000);
+    assert.equal(murmur3.hash32    ('0'),              0xd271c07f);
+    assert.equal(murmur3.hash32    (0),                0xd271c07f);
+    assert.equal(murmur3.hash32    (new Buffer('0')),  0xd271c07f);
 assert.deepEqual(murmur3.hash128$32(null),            [0x00000000, 0x00000000, 0x00000000, 0x00000000]);
 assert.deepEqual(murmur3.hash128$32('0'),             [0x0ab2409e, 0xa5eb34f8, 0xa5eb34f8, 0xa5eb34f8]);
 assert.deepEqual(murmur3.hash128$32(0),               [0x0ab2409e, 0xa5eb34f8, 0xa5eb34f8, 0xa5eb34f8]);

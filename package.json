@@ -1,6 +1,6 @@
 {
   "name": "node-murmur3",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Node bindings to embedded Murmur3",
   "author": "Pierre Carrier <pierre.carrier@airbnb.com>",
   "license": "ISC",
@@ -10,5 +10,5 @@
   "engines": { "node": ">= 0.10.0" },
   "scripts": { "test": "node-gyp configure build && node test.js" },
   "dependencies": { "bindings": "1.1.1" },
-  "main": "index.js"
+  "main": "./index.js"
 }
