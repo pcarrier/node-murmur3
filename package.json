@@ -1,6 +1,6 @@
 {
   "name": "node-murmur3",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Node bindings to embedded Murmur3",
   "author": "Pierre Carrier <pierre.carrier@airbnb.com>",
   "license": "ISC",
