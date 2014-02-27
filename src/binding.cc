@@ -1,5 +1,5 @@
 #include <node.h>
-#include <node/node_buffer.h>
+#include <node_buffer.h>
 #include <v8.h>
 #include "MurmurHash3.h"
 
