@@ -1,68 +1,57 @@
+
 #include <node.h>
-#include <node_buffer.h>
+#include <nan.h>
 #include "MurmurHash3.h"
 
-using v8::Arguments;
-using v8::Array;
-using v8::Exception;
-using v8::Handle;
-using v8::HandleScope;
-using v8::Integer;
-using v8::Object;
-using v8::String;
-using v8::ThrowException;
-using v8::Value;
+using namespace v8;
 
-using node::Buffer;
 
-// hash32(data, seed)
-Handle < Value > Hash_32(const Arguments & args)
-{
-        HandleScope scope;
-        uint32_t result = 0;
-        const uint32_t seed = args[1]->Uint32Value();
-        MurmurHash3_x86_32((void *)Buffer::Data(args[0]),
-                           (int)Buffer::Length(args[0]), seed, &result);
-        return scope.Close(Integer::NewFromUnsigned(result));
+void Hash32(const Nan::FunctionCallbackInfo<Value>& info) {
+  uint32_t result = 0;
+  const uint32_t seed = info[1]->Uint32Value();
+  MurmurHash3_x86_32((void *)node::Buffer::Data(info[0]),
+                      (int)node::Buffer::Length(info[0]), seed, &result);
+
+  Local<Number> num = Nan::New(result);
+
+  info.GetReturnValue().Set(num);
 }
 
-// hash128$32(data, seed)
-Handle < Value > Hash_128_32(const Arguments & args)
-{
-        HandleScope scope;
-        const Handle < Array > result = Array::New(4);
-        uint32_t buff[4] = { 0, 0, 0, 0 };
-        const uint32_t seed = args[1]->Uint32Value();
-        MurmurHash3_x86_128((void *)Buffer::Data(args[0]),
-                            (int)Buffer::Length(args[0]), seed, (void *)&buff);
-        result->Set(0, Integer::NewFromUnsigned(buff[0]));
-        result->Set(1, Integer::NewFromUnsigned(buff[1]));
-        result->Set(2, Integer::NewFromUnsigned(buff[2]));
-        result->Set(3, Integer::NewFromUnsigned(buff[3]));
-        return scope.Close(result);
+void Hash_128_32(const Nan::FunctionCallbackInfo<Value>& info) {
+  Local<Array> result = Nan::New<Array>(4);
+  uint32_t buff[4] = { 0, 0, 0, 0 };
+  const uint32_t seed = info[1]->Uint32Value();
+  MurmurHash3_x86_128((void *)node::Buffer::Data(info[0]),
+                      (int)node::Buffer::Length(info[0]), seed, (void *)&buff);
+  result->Set(0, Integer::NewFromUnsigned(Isolate::GetCurrent(), buff[0]));
+  result->Set(1, Integer::NewFromUnsigned(Isolate::GetCurrent(), buff[1]));
+  result->Set(2, Integer::NewFromUnsigned(Isolate::GetCurrent(), buff[2]));
+  result->Set(3, Integer::NewFromUnsigned(Isolate::GetCurrent(), buff[3]));
+
+  info.GetReturnValue().Set(result);
 }
 
-// hash128$64(data, seed)
-Handle < Value > Hash_128_64(const Arguments & args)
-{
-        HandleScope scope;
-        const Handle < Array > result = Array::New(4);
-        uint32_t buff[4] = { 0, 0, 0, 0 };
-        const uint32_t seed = args[1]->Uint32Value();
-        MurmurHash3_x64_128((void *)Buffer::Data(args[0]),
-                            (int)Buffer::Length(args[0]), seed, (void *)&buff);
-        result->Set(0, Integer::NewFromUnsigned(buff[0]));
-        result->Set(1, Integer::NewFromUnsigned(buff[1]));
-        result->Set(2, Integer::NewFromUnsigned(buff[2]));
-        result->Set(3, Integer::NewFromUnsigned(buff[3]));
-        return scope.Close(result);
+void Hash_128_64(const Nan::FunctionCallbackInfo<Value>& info) {
+  Local<Array> result = Nan::New<Array>(4);
+  uint32_t buff[4] = { 0, 0, 0, 0 };
+  const uint32_t seed = info[1]->Uint32Value();
+  MurmurHash3_x64_128((void *)node::Buffer::Data(info[0]),
+                      (int)node::Buffer::Length(info[0]), seed, (void *)&buff);
+  result->Set(0, Integer::NewFromUnsigned(Isolate::GetCurrent(), buff[0]));
+  result->Set(1, Integer::NewFromUnsigned(Isolate::GetCurrent(), buff[1]));
+  result->Set(2, Integer::NewFromUnsigned(Isolate::GetCurrent(), buff[2]));
+  result->Set(3, Integer::NewFromUnsigned(Isolate::GetCurrent(), buff[3]));
+
+  info.GetReturnValue().Set(result);
 }
 
-void RegisterModule(Handle < Object > exports)
-{
-        NODE_SET_METHOD(exports, "hash32", Hash_32);
-        NODE_SET_METHOD(exports, "hash128$32", Hash_128_32);
-        NODE_SET_METHOD(exports, "hash128$64", Hash_128_64);
+void Init(Local<Object> exports) {
+  exports->Set(Nan::New("hash32").ToLocalChecked(),
+              Nan::New<FunctionTemplate>(Hash32)->GetFunction());
+  exports->Set(Nan::New("hash128$32").ToLocalChecked(),
+              Nan::New<FunctionTemplate>(Hash_128_32)->GetFunction());
+  exports->Set(Nan::New("hash128$64").ToLocalChecked(),
+               Nan::New<FunctionTemplate>(Hash_128_64)->GetFunction());
 }
 
-NODE_MODULE(murmur3, RegisterModule);
+NODE_MODULE(addon, Init)
