@@ -1,5 +1,4 @@
-var assert = require('assert'),
-    murmur3 = require('./index');
+var assert = require('assert'), murmur3 = require('./index');
 
 // Types don't matter, goes to new Buffer(toString()) as needed
 assert.equal(    murmur3.hash32    (null),             0x00000000);

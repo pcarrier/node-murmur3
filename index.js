@@ -1,4 +1,4 @@
-var rawLib = require('bindings')('murmur3');
+var rawLib = require('./build/Release/addon');
 
 module.exports = {
   hash32: function(data, seed) {
