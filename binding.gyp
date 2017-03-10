@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "murmur3",
+      "target_name": "addon",
       "sources": [
         "src/binding.cc",
         "src/MurmurHash3.cpp"
