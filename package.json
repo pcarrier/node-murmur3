@@ -5,9 +5,20 @@
   "author": "Pierre Carrier <pierre.carrier@airbnb.com>",
   "license": "ISC",
   "homepage": "https://github.com/pcarrier/node-murmur3",
-  "bugs": { "url": "https://github.com/pcarrier/node-murmur3/issues" },
-  "repository": { "type": "git", "url": "https://github.com/pcarrier/node-murmur3" },
-  "engines": { "node": ">= 0.10.0" },
-  "scripts": { "test": "node-gyp configure build && node test.js" },
-  "main": "./index.js"
+  "bugs": {
+    "url": "https://github.com/pcarrier/node-murmur3/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pcarrier/node-murmur3"
+  },
+  "scripts": {
+    "test": "node-gyp rebuild && node test.js",
+    "bench": "node-gyp rebuild && node bench.js"
+  },
+  "main": "./index.js",
+  "devDependencies": {
+    "benchmark": "^2.1.4",
+    "microtime": "^2.1.3"
+  }
 }

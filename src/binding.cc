@@ -11,6 +11,12 @@ using v8::String;
 using v8::FunctionCallbackInfo;
 using v8::Value;
 
+void Double(const FunctionCallbackInfo<Value>& args)
+{
+    Isolate* isolate = args.GetIsolate();
+    args.GetReturnValue().Set(Integer::NewFromUnsigned(isolate, 2 * args[0]->Uint32Value()));
+}
+
 // hash32(data, seed)
 void Hash_32(const FunctionCallbackInfo<Value>& args)
 {
@@ -59,6 +65,7 @@ void Hash_128_64(const FunctionCallbackInfo<Value>& args)
 
 void Initialize(Local<Object> exports)
 {
+        NODE_SET_METHOD(exports, "$double", Double);
         NODE_SET_METHOD(exports, "hash32", Hash_32);
         NODE_SET_METHOD(exports, "hash128$32", Hash_128_32);
         NODE_SET_METHOD(exports, "hash128$64", Hash_128_64);
